@@ -212,6 +212,77 @@ def main():
         
         send_notification(title, content)
     else:
+        # 获取天气信息
+        weather_info = get_weather(WEATHER_CITY, JUHE_WEATHER_API_KEY)
+
+        # 获取星期几的中文表示
+        weekday_names = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+        weekday_name = weekday_names[current_weekday - 1]
+
+        title = f"🎉 今日无课提醒 (第{current_week}周 {weekday_name})"
+        content_lines = []
+        
+        # 添加主容器样式
+        content_lines.append("""
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+                    line-height: 1.6; color: #333; padding: 20px; border-radius: 10px; 
+                    background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);">
+        """)
+        
+        # 添加标题
+        content_lines.append(f"""
+        <h1 style="color: #2c3e50; margin: 0 0 20px 0; padding-bottom: 10px; 
+                   border-bottom: 2px solid #3498db; text-align: center;">
+            🎉 今日无课
+        </h1>
+        """)
+        
+        # 添加日期和周数信息
+        content_lines.append(f"""
+        <div style="background-color: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+            <p style="margin: 0; color: #1565c0;">
+                <span style="font-weight: bold;">📅 日期：</span>{today.strftime('%Y年%m月%d日')}
+                <span style="margin-left: 15px; font-weight: bold;">📊 第{current_week}周</span>
+                <span style="margin-left: 15px; font-weight: bold;">📌 {weekday_name}</span>
+            </p>
+        </div>
+        """)
+        
+        # 添加天气信息
+        content_lines.append(f"""
+        <div style="background-color: #e8f5e9; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+            <p style="margin: 0; color: #2e7d32;">
+                <span style="font-weight: bold;">🌤️ 天气信息 ({WEATHER_CITY})：</span>{weather_info}
+            </p>
+        </div>
+        """)
+        
+        # 添加无课信息
+        content_lines.append("""
+        <div style="background-color: white; padding: 15px; border-radius: 5px; 
+                    margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+            <p style="margin: 0; color: #1a237e; font-size: 1.1em; font-weight: bold; text-align: center;">
+                🎉 今天没有课程安排，可以好好休息或安排其他活动！
+            </p>
+        </div>
+        """)
+        
+        # 添加底部信息
+        now = beijing_time.strftime("%Y-%m-%d %H:%M:%S")
+        content_lines.append(f"""
+        <div style="text-align: right; font-size: 0.9em; color: #666; 
+                    border-top: 1px solid #dee2e6; padding-top: 10px;">
+            <p style="margin: 0;">
+                <span style="font-weight: bold;">🕒 更新时间：</span>{now}
+            </p>
+        </div>
+        """)
+        
+        content_lines.append("</div>")
+        
+        content = "".join(content_lines)
+        
+        send_notification(title, content)
         print("No courses scheduled for today.")
 
 if __name__ == "__main__":
