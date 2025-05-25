@@ -2,6 +2,7 @@ import json
 import requests
 import os
 from datetime import datetime, date
+import pytz
 
 # Get token and API key from environment variables
 PUSHPLUS_TOKEN = os.environ.get("PUSHPLUS_TOKEN")
@@ -19,6 +20,9 @@ WEATHER_CITY = "兰州"
 
 # Define the start date of the semester
 SEMESTER_START_DATE = date(2025, 2, 24)
+
+# 设置北京时区
+BEIJING_TZ = pytz.timezone('Asia/Shanghai')
 
 def load_schedule(file_path):
     """Loads the schedule from a JSON file."""
@@ -104,8 +108,10 @@ def main():
     if not schedule:
         return
 
-    current_weekday = datetime.now().weekday() + 1 # Convert to 1-7 scale
-    today = date.today()
+    # 获取北京时间
+    beijing_time = datetime.now(BEIJING_TZ)
+    current_weekday = beijing_time.weekday() + 1  # Convert to 1-7 scale
+    today = beijing_time.date()
     current_week = (today - SEMESTER_START_DATE).days // 7 + 1
 
     print(f"Checking schedule for today (Weekday {current_weekday}, Week {current_week})...")
@@ -148,7 +154,7 @@ def main():
         content_lines.append("</ul>") # End the unordered list
         
         # Add a footer with timestamp
-        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        now = beijing_time.strftime("%Y-%m-%d %H:%M:%S")
         content_lines.append(f"<div style=\"text-align: right; font-size: 0.8em; color: #666; margin-top: 10px;\">更新时间：{now}</div>")
 
         content_lines.append("</div>") # End the container div
