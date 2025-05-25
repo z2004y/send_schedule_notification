@@ -129,35 +129,84 @@ def main():
         # Get weather information
         weather_info = get_weather(WEATHER_CITY, JUHE_WEATHER_API_KEY)
 
-        title = f"今日课程提醒 (第{current_week}周)"
+        # 获取星期几的中文表示
+        weekday_names = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+        weekday_name = weekday_names[current_weekday - 1]
+
+        title = f"📚 今日课程提醒 (第{current_week}周 {weekday_name})"
         content_lines = []
         
-        # Add a container div with refined styling and increased font size
-        content_lines.append("<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'; line-height: 1.6; color: #333; padding: 15px; border: 1px solid #cce5ff; border-radius: .25rem; background-color: #e9f7fd; font-size: 0.9em;\">")
+        # 添加主容器样式
+        content_lines.append("""
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+                    line-height: 1.6; color: #333; padding: 20px; border-radius: 10px; 
+                    background: linear-gradient(to bottom right, #f8f9fa, #e9ecef);">
+        """)
         
-        # Add a heading with refined styling including week number
-        content_lines.append(f"<h2 style=\"color: #004085; margin-top: 0; margin-bottom: 10px; border-bottom: 2px solid #b8daff; padding-bottom: 5px;\">今日课程安排：</h2>")
+        # 添加标题
+        content_lines.append(f"""
+        <h1 style="color: #2c3e50; margin: 0 0 20px 0; padding-bottom: 10px; 
+                   border-bottom: 2px solid #3498db; text-align: center;">
+            📚 今日课程安排
+        </h1>
+        """)
         
-        # Add weather information
-        content_lines.append(f"<p style=\"margin-bottom: 15px; color: #0056b3;\"><span style=\"font-weight: bold;\">当前天气 ({WEATHER_CITY}):</span> {weather_info}</p>")
+        # 添加日期和周数信息
+        content_lines.append(f"""
+        <div style="background-color: #e3f2fd; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+            <p style="margin: 0; color: #1565c0;">
+                <span style="font-weight: bold;">📅 日期：</span>{today.strftime('%Y年%m月%d日')}
+                <span style="margin-left: 15px; font-weight: bold;">📊 第{current_week}周</span>
+                <span style="margin-left: 15px; font-weight: bold;">📌 {weekday_name}</span>
+            </p>
+        </div>
+        """)
         
-        # Add introductory text with refined styling
-        content_lines.append("<p style=\"margin-bottom: 20px; color: #004085;\">请注意以下课程时间和地点：</p>")
+        # 添加天气信息
+        content_lines.append(f"""
+        <div style="background-color: #e8f5e9; padding: 10px; border-radius: 5px; margin-bottom: 20px;">
+            <p style="margin: 0; color: #2e7d32;">
+                <span style="font-weight: bold;">🌤️ 天气信息 ({WEATHER_CITY})：</span>{weather_info}
+            </p>
+        </div>
+        """)
         
-        # Start the unordered list with refined styling
-        content_lines.append("<ul style=\"padding-left: 0; margin-bottom: 20px; list-style: none;\">") # Removed padding-left and added margin-bottom
+        # 添加课程列表
+        content_lines.append("""
+        <div style="margin-bottom: 20px;">
+            <h2 style="color: #2c3e50; margin: 0 0 15px 0; font-size: 1.2em;">
+                📋 今日课程安排：
+            </h2>
+        """)
         
-        for course in todays_courses:
-            # Using HTML list items with refined styling and emoji
-            content_lines.append(f"<li style=\"margin-bottom: 15px; padding: 15px; border: 1px solid #b8daff; border-radius: .25rem; background-color: #cce5ff; box-shadow: 0 2px 4px rgba(0,0,0,.05);\">📚 <b><span style=\"font-size: 1.1em; color: #0056b3;\">{course['course_name']}</span></b><br>时间：{course['start_time']}<br>地点：{course['location']}</li>")
+        for i, course in enumerate(todays_courses, 1):
+            content_lines.append(f"""
+            <div style="background-color: white; padding: 15px; border-radius: 5px; 
+                        margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                <p style="margin: 0 0 10px 0; color: #1a237e; font-size: 1.1em; font-weight: bold;">
+                    {i}. {course['course_name']}
+                </p>
+                <p style="margin: 0; color: #455a64;">
+                    <span style="font-weight: bold;">⏰ 时间：</span>{course['start_time']}
+                    <span style="margin-left: 15px; font-weight: bold;">📍 地点：</span>{course['location']}
+                </p>
+            </div>
+            """)
         
-        content_lines.append("</ul>") # End the unordered list
+        content_lines.append("</div>")
         
-        # Add a footer with timestamp
+        # 添加底部信息
         now = beijing_time.strftime("%Y-%m-%d %H:%M:%S")
-        content_lines.append(f"<div style=\"text-align: right; font-size: 0.8em; color: #666; margin-top: 10px;\">更新时间：{now}</div>")
-
-        content_lines.append("</div>") # End the container div
+        content_lines.append(f"""
+        <div style="text-align: right; font-size: 0.9em; color: #666; 
+                    border-top: 1px solid #dee2e6; padding-top: 10px;">
+            <p style="margin: 0;">
+                <span style="font-weight: bold;">🕒 更新时间：</span>{now}
+            </p>
+        </div>
+        """)
+        
+        content_lines.append("</div>")
         
         content = "".join(content_lines)
         
