@@ -89,5 +89,19 @@
         "location": "4412公共计算机实验室（三）",
         "weekday": 1,
         "week_type": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18"
+    },
+    {
+        "course_name": "大学体育 Ⅳ",
+        "start_time": "20:40",
+        "location": "西校区操场",
+        "weekday": 7,
+        "week_type": "every"
+    },
+    {
+        "course_name": "大学体育 Ⅳ",
+        "start_time": "16:40",
+        "location": "西校区操场",
+        "weekday": 7,
+        "week_type": "every"
     }
 ]
