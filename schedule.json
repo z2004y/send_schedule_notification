@@ -95,27 +95,27 @@
         "start_time": "20:40",
         "location": "西校区操场",
         "weekday": 7,
-        "week_type": "every"
+        "week_type": "13"
     },
     {
         "course_name": "大学体育 Ⅳ",
         "start_time": "16:40",
         "location": "西校区操场",
         "weekday": 7,
-        "week_type": "every"
+        "week_type": "13"
     },
     {
         "course_name": "大学体育 Ⅳ",
         "start_time": "06:40",
         "location": "西校区操场",
         "weekday": 7,
-        "week_type": "every"
+        "week_type": "13"
     },
     {
         "course_name": "大学体育 Ⅳ",
         "start_time": "10:40",
         "location": "西校区操场",
         "weekday": 7,
-        "week_type": "every"
+        "week_type": "13"
     }
 ]
